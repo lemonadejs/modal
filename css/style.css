@@ -1,0 +1,39 @@
+.lm-modal {
+    position: absolute;
+    min-width: 150px;
+    min-height: 120px;
+    width: 300px;
+    height: 240px;
+    border-radius: 4px;
+    z-index: 9;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.lm-modal > div {
+    padding: 10px;
+}
+
+.lm-modal-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lm-modal[title]::before {
+    content: attr(title);
+    display: block;
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.lm-modal[title=""]::before {
+    display: none;
+}
+
+.lm-modal[closed="true"] {
+    display: none;
+}
