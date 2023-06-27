@@ -10,50 +10,50 @@ if (! lemonade && typeof(require) === 'function') {
 
     /*
        var defaults = {
-            url: null,
-            onopen: null,
-            onclose: null,
+            >url: null,
+            >onopen: null,
+            >onclose: null,
             onload: null,
-            closed: false,
-            width: null,
-            height: null,
-            title: null,
+            >closed: false,
+            >width: null,
+            >height: null,
+            >title: null,
             icon: null,
-            resizable
-            draggable
+            >resizable
+            >draggable
         };
      */
 
     let state = {};
     let editorAction;
     // Width of the border
-    let cornerSize = 15;
+    let cornerSize = 10;
 
     // Events
     const mouseDown = function(e) {
-        let item = e.target;
-        if (item.classList.contains('lm-modal')) {
+        let item = e.target.closest('.lm-modal');
+        if (!!item) {
             // Keep the tracking information
-            let rect = e.target.getBoundingClientRect();
+            let rect = item.getBoundingClientRect();
             editorAction = {
-                e: e.target,
+                e: item,
                 x: e.clientX,
                 y: e.clientY,
                 w: rect.width,
                 h: rect.height,
-                d: e.target.style.cursor,
-                resizing: e.target.style.cursor ? true : false,
+                d: item.style.cursor,
+                resizing: item.style.cursor ? true : false,
                 actioned: false,
                 s: this,
             }
 
             // Make sure width and height styling is OK
             if (! e.target.style.width) {
-                e.target.style.width = rect.width + 'px';
+                item.style.width = rect.width + 'px';
             }
 
-            if (! e.target.style.height) {
-                e.target.style.height = rect.height + 'px';
+            if (! item.style.height) {
+                item.style.height = rect.height + 'px';
             }
 
             // Remove any selection from the page
@@ -104,8 +104,8 @@ if (! lemonade && typeof(require) === 'function') {
             let y = e.clientY || e.pageY;
 
             // Action on going
-            if (! editorAction.resizing) {
-                if (!state || (state && state.x == null && state.y == null)) {
+            if (! editorAction.resizing && editorAction.s.draggable == true) {
+                if (state && state.x == null && state.y == null) {
                     state.x = x;
                     state.y = y;
                 }
@@ -166,29 +166,17 @@ if (! lemonade && typeof(require) === 'function') {
                 }
             }
         } else {
-            let item = e.target;
-            if (item.classList.contains('lm-modal')) {
+            let item = e.target.closest('.lm-modal');
+            if (!!item && item.lemon.self && item.lemon.self.resizable && item.lemon.self.resizable == 'true') {
                 let rect = item.getBoundingClientRect();
-                if (e.clientY - rect.top < cornerSize) {
-                    if (rect.width - (e.clientX - rect.left) < cornerSize) {
-                        item.style.cursor = 'ne-resize';
-                    } else if (e.clientX - rect.left < cornerSize) {
-                        item.style.cursor = 'nw-resize';
-                    } else {
-                        item.style.cursor = 'n-resize';
-                    }
-                } else if (rect.height - (e.clientY - rect.top) < cornerSize) {
+                if (rect.height - (e.clientY - rect.top) < cornerSize) {
                     if (rect.width - (e.clientX - rect.left) < cornerSize) {
                         item.style.cursor = 'se-resize';
-                    } else if (e.clientX - rect.left < cornerSize) {
-                        item.style.cursor = 'sw-resize';
                     } else {
                         item.style.cursor = 's-resize';
                     }
                 } else if (rect.width - (e.clientX - rect.left) < cornerSize) {
                     item.style.cursor = 'e-resize';
-                } else if (e.clientX - rect.left < cornerSize) {
-                    item.style.cursor = 'w-resize';
                 } else {
                     item.style.cursor = '';
                 }
@@ -200,22 +188,44 @@ if (! lemonade && typeof(require) === 'function') {
     document.addEventListener('mousedown', mouseDown);
     document.addEventListener('mousemove', mouseMove);
 
-    const Modal = function () {
+    const Modal = function (template) {
+
         let self = this
 
+        // Dispatcher
+        const Dispatch = (type, option) => {
+            if (typeof self[type] === 'function') {
+                self[type](self, option)
+            }
+        }
+        
         self.onload = function() {
             if (self.url) {
-                // Load remote content
+                fetch(self.url)
+                    .then(response => response.clone().body)
+                    .then(body => {
+                        let reader = body.getReader()
+                        reader.read().then(function pump({done, value}) { 
+                            const decoder = new TextDecoder()
+                            self.content.innerHTML = decoder.decode(value.buffer)
+                        })
+                    })
             }
         }
 
         self.mousedown = mouseDown.bind(self);
 
+        self.onchange = function(property) {
+            if (property === 'closed') {
+                self.closed ? Dispatch('onclose') : Dispatch('onopen')
+            }
+        }
+
         window.modal = self;
 
         return `<div class="lm-modal" title="{{self.title}}" closed="{{self.closed}}"
-            style="width: {{self.width}}px; height: {{self.height}}px; top: {{self.top}}; left: {{self.left}};" onmousedown="self.mousedown(e)" tabindex="-1">
-                <div>123</div>
+            style="width: {{self.width}}px; height: {{self.height}}px; top: {{self.top}}px; left: {{self.left}}px;" onmousedown="self.mousedown(e)" tabindex="-1">
+                <div :ref="self.content">${template}</div>
             </div>`
     }
 

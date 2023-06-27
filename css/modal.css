@@ -30,6 +30,7 @@
     padding: 10px;
     box-sizing: border-box;
 }
+
 .lm-modal[title=""]::before {
     display: none;
 }

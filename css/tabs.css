@@ -1,0 +1,38 @@
+.lm-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+}
+
+.lm-tabs > div {
+  height: 100%;
+}
+
+.lm-tabs > ul {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 5px;
+  width: fit-content;
+  align-self: center;
+}
+
+.lm-tabs > ul > li {
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 12px;
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.lm-tabs > ul > li.selected {
+  outline: 1px solid rgba(0, 0, 0, 1);
+}
+
+.lm-tabs > :not(:first-child) {
+  display: none;
+}
+
+.lm-tabs > :not(:first-child).selected {
+  display: inline-block;
+}
