@@ -166,8 +166,6 @@ if (!Tabs && typeof (require) === 'function') {
         let self = this
         window.colorPicker = self;
 
-        console.log(html)
-
         self.onload = function () {
             if (self.inputRef) {
                 self.inputRef.addEventListener('click',  (event) => {
@@ -195,12 +193,9 @@ if (!Tabs && typeof (require) === 'function') {
             input = html.slice(0, html.indexOf('>') - 1) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>') - 1) 
         }
 
-        console.log(input)
-
-
         let template = `<div class="lm-color-picker">
         ${input}
-        <Modal @ref="self.component" :closed="self.closed" width="300" height="185">
+        <Modal @ref="self.component" :closed="self.closed" width="300" height="185" :onopen="self.onopen" :onclose="self.onclose">
             <Tabs selected="0">
                 <div title="Grid"><Grid :onpick="self.parent.parent.updateColor" pallete={{self.parent.parent.pallete}} /></div>
                 <div title="Spectrum"><Spectrum :onpick="self.parent.parent.updateColor"/></div>
