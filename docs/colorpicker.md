@@ -2,20 +2,21 @@
 
 ## Properties
 
-- closed: boolean -> if true the colorpicker closes, if false colorpicker shows
-- pallete: 
+- closed: boolean -> if false colorpicker starts open. default is true
+- pallete: matrix -> provide the colors that will be rendered in the grid
 - oncolorchange: callback function -> triggered when color is selected.
-
+- onopen: callbackfunction -> triggered when colorpicker modal opens
+- onclose: callbackfunction -> triggered when colorpicker modal closes
 
 
 ### Input Configuration
 
-This feature allows you to send the input that will toggle the Colorpicker
+This feature allows you to personalize the element that will toggle the Colorpicker
 
-'''html
+```html
 <Colorpicker>
-  <Toggle-Element>
+  <Input>
 </Colorpicker>
-'''
+```
 
-By Default ColorPicker will apply bind and a ref to the element.
+By Default ColorPicker will bind value and add ref to this element.

@@ -11,10 +11,6 @@
     box-sizing: border-box;
 }
 
-.lm-modal > div {
-    padding: 10px;
-}
-
 .lm-modal-center {
     display: flex;
     justify-content: center;
