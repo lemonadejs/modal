@@ -1,9 +1,11 @@
 ### Todo
 
 - [ ] Fix resizable prop received as string and not bool
+- [ ] Add 'type' property to Colorpicker
 
 ### In Progress
 
+- [ ] Work on Colorpicker doc
 
 ### Done ✓
 

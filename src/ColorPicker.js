@@ -150,9 +150,7 @@ if (!Tabs && typeof (require) === 'function') {
                 self.onpick(rgbToHex(pixel[0], pixel[1], pixel[2]))
             }
         }
-     
-        self.color = 'Click to get a color';
-     
+          
         return `<div class="lm-color-hsl">
             <canvas width="278" height="145" :ref="self.canvas"
                 onmousedown="self.update(e)"
@@ -196,7 +194,7 @@ if (!Tabs && typeof (require) === 'function') {
         ${input}
         <Modal :closed="self.closed" width="300" height="240" :onopen="self.onopen" :onclose="self.onclose">
         <div class="lm-color-picker-options">
-            <button onclick="self.parent.color = ''; self.parent.closed = 'true'">Reset</button>
+            <button onclick="self.parent.color = '#FFFFFF'; self.parent.closed = 'true'">Reset</button>
             <button onclick="self.parent.closed = 'true'">Done</button>
         </div>
             <Tabs selected="0">
