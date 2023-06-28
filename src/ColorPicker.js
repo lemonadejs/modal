@@ -201,7 +201,7 @@ if (!Tabs && typeof (require) === 'function') {
         if (!html && !self.type) {
             input = '<input type="color" :ref="self.inputRef" :bind="self.color" />'
         } else if (!html && self.type) {
-            input = 'jao'
+            // Deal with type
         }
 
         let template = `<div class="lm-color-picker">

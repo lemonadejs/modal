@@ -4,12 +4,12 @@
 
 -   Lightweight: Lemonade color picker is only about 4 Kbytes in size, making it fast and easy to load.
 -   Customizable: You can define the toggle element and the pallete of the colorpicker.
--   Reactive: Any changes to the pallete .
--   Integration: DataGridLM can be used as a standalone library or integrated with LemonadeJS or React.
+-   Reactive: Any changes to the pallete are automatically applied to the HTML.
+-   Integration: ColorPickerLM can be used as a standalone library or integrated with LemonadeJS or React.
 
 ## Getting Started
 
-Utilizing the Color PickerLM component is straightforward. Just include the JavaScript file in your project and instantiate a new Color Picker using the provided API.
+Utilizing the ColorPickerLM component is straightforward. Just include the JavaScript file in your project and instantiate a new Color Picker using the provided API.
 
 ## Installation
 
@@ -68,22 +68,22 @@ export default function Component() {
 }
 ```
 
-## Properties
+### Properties
 
 - closed: boolean -> if false colorpicker starts open. default is true
 - pallete: matrix -> provide the colors that will be rendered in the grid
-- type: string -> chooses the element that will toggle the colorpicker. options: 'button', 'input', 'icon', 'custom'
+- type: string -> chooses the element that will toggle the colorpicker. options are: 'button', 'input', 'icon', 'custom'
 
-## Events
+### Events
 
 - oncolorchange: callback function(color) -> triggered when color is selected.
 - onopen: callbackfunction(color) -> triggered when colorpicker modal opens
 - onclose: callbackfunction(color) -> triggered when colorpicker modal closes
 
 
-### Custom Input Configuration
+#### Custom Input Configuration
 
-This feature allows you to have more control to personalize the element that will toggle the Colorpicker
+When **type** is set to 'custom', the custom element should be passed like that. This feature allows you to have more control to personalize the element that will toggle the Colorpicker
 
 ```html
 <Colorpicker>
@@ -91,4 +91,4 @@ This feature allows you to have more control to personalize the element that wil
 </Colorpicker>
 ```
 
-By Default ColorPicker will bind value and add ref to this element.
+By Default Colorpicker will bind value and add ref to this element.
