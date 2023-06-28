@@ -38,7 +38,7 @@ There is two ways to instantiate a DataGrid, Programatically or Dinamically
 
 #### Programatically
 
-Create an instance of the data grid by providing the DOM element and the **_options_** object.
+Create an instance of the Colorpicker by providing the DOM element and the **_options_** object.
 
 ```html
 <div id="root"></div>
@@ -52,6 +52,23 @@ Create an instance of the data grid by providing the DOM element and the **_opti
       type: 'color',
     })
 </script>
+```
+
+#### Dynamically with LemonadeJS
+
+The Colorpicker is invoked within the template, with the options being passed as properties.
+
+```javascript
+import Colorpicker from '@lemonadejs/colorpicker'
+import lemonade from 'lemonadejs'
+
+lemonade.setComponents({ Colorpicker })
+
+export default function Component() {
+    let self = this
+
+    return `<Colorpicker />`
+}
 ```
 
 ## Properties
@@ -68,7 +85,7 @@ Create an instance of the data grid by providing the DOM element and the **_opti
 
 ### Input Configuration
 
-This feature allows you to personalize the element that will toggle the Colorpicker
+This feature allows you to have more control to personalize the element that will toggle the Colorpicker
 
 ```html
 <Colorpicker>
