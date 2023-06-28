@@ -34,7 +34,7 @@ To use Colorpicker via a CDN, include the following script tags in your HTML fil
 
 ### Usage
 
-There is two ways to instantiate a DataGrid, Programatically or Dinamically
+There is two ways to instantiate a Colorpicker, Programatically or Dinamically
 
 #### Programatically
 

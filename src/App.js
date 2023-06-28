@@ -45,7 +45,7 @@ function App() {
     // self.dom = `<input type='text'></input>`
 
     return `<>
-    <ColorPicker color="{{self.othercolor}}" :closed="false" :onopen="self.onopen" :onclose="self.onclose" />
+    <ColorPicker />
     </>`;
 
     // return `<>

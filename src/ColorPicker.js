@@ -164,6 +164,10 @@ if (!Tabs && typeof (require) === 'function') {
         let self = this
         window.colorPicker = self;
 
+        if (typeof self.closed === 'undefined') {
+            self.closed = true
+        }
+
         self.onload = function () {
             if (self.inputRef) {
                 self.inputRef.addEventListener('click',  (event) => {
