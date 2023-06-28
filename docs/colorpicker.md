@@ -20,7 +20,7 @@ This feature allows you to personalize the element that will toggle the Colorpic
 
 ```html
 <Colorpicker>
-  <Input>
+  <Element>
 </Colorpicker>
 ```
 

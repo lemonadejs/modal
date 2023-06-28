@@ -145,8 +145,8 @@ if (!Tabs && typeof (require) === 'function') {
                 // Position pointer
                 self.point.style.left = left + 'px'
                 self.point.style.top = top + 'px'
+                
                 // Return color
-
                 self.onpick(rgbToHex(pixel[0], pixel[1], pixel[2]))
             }
         }
@@ -181,10 +181,6 @@ if (!Tabs && typeof (require) === 'function') {
                 self.oncolorchange(newColor)
             }
         }
-
-        self.toggle = function () {
-            self.closed = !self.closed
-        }
         
         let input = ''
 
@@ -198,8 +194,11 @@ if (!Tabs && typeof (require) === 'function') {
 
         let template = `<div class="lm-color-picker">
         ${input}
-        <Modal @ref="self.component" :closed="self.closed" width="300" height="240" :onopen="self.onopen" :onclose="self.onclose">
-        <div class="lm-color-picker-options"><button onclick="self.parent.color = ''; self.parent.toggle()">Reset</button><button onclick="self.parent.toggle()">Done</button></div>
+        <Modal :closed="self.closed" width="300" height="240" :onopen="self.onopen" :onclose="self.onclose">
+        <div class="lm-color-picker-options">
+            <button onclick="self.parent.color = ''; self.parent.closed = 'true'">Reset</button>
+            <button onclick="self.parent.closed = 'true'">Done</button>
+        </div>
             <Tabs selected="0">
                 <div title="Grid"><Grid :onpick="self.parent.parent.updateColor" pallete={{self.parent.parent.pallete}} /></div>
                 <div title="Spectrum"><Spectrum :onpick="self.parent.parent.updateColor"/></div>
