@@ -3,6 +3,10 @@
   height: 85%;
 }
 
+.lm-tabs > div {
+  padding: 10px 10px;
+}
+
 .lm-color-picker-options {
   box-sizing: border-box;
   padding: 10px 10px;

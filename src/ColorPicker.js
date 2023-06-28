@@ -154,7 +154,7 @@ if (!Tabs && typeof (require) === 'function') {
         self.color = 'Click to get a color';
      
         return `<div class="lm-color-hsl">
-            <canvas width="278" height="141" :ref="self.canvas"
+            <canvas width="278" height="145" :ref="self.canvas"
                 onmousedown="self.update(e)"
                 onmousemove="self.update(e)"
                 ontouchmove="self.update(e)"></canvas>
@@ -167,7 +167,6 @@ if (!Tabs && typeof (require) === 'function') {
         window.colorPicker = self;
 
         self.onload = function () {
-            self.closed = !!self.closed
             if (self.inputRef) {
                 self.inputRef.addEventListener('click',  (event) => {
                     event.preventDefault()
