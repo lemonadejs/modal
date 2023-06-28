@@ -42,11 +42,13 @@ Create an instance of the Colorpicker by providing the DOM element and the **_op
 <script>
     const root = document.getElementById('root')
     Colorpicker(root, {
-      oncolorchange: function(color) {
-        // You can manipulate the color here
+
+      oncolorchange: function (color) {
+        // You can manipulate the color here when it changes
         console.log(color)
       },
-      type: 'color',
+      type: 'color'
+
     })
 </script>
 ```
@@ -64,31 +66,36 @@ lemonade.setComponents({ Colorpicker })
 export default function Component() {
     let self = this
 
-    return `<Colorpicker />`
+    self.handleChange = function (color) {
+      // You can manipulate the color here when it changes
+      console.log(color)
+    }
+
+    return `<Colorpicker :oncolorchange="self.handleChange" />`
 }
 ```
 
 ### Properties
 
-- closed: boolean -> if false colorpicker starts open. default is true
-- pallete: matrix -> provide the colors that will be rendered in the grid
-- type: string -> chooses the element that will toggle the colorpicker. options are: 'button', 'input', 'icon', 'custom'
+- **closed**: boolean -> if false colorpicker starts open. default is true
+- **pallete**: matrix -> provide the colors that will be rendered in the grid
+- **type**: string -> chooses the element that will toggle the colorpicker. options are: 'button', 'input', 'icon', 'custom'
 
 ### Events
 
-- oncolorchange: callback function(color) -> triggered when color is selected.
-- onopen: callbackfunction(color) -> triggered when colorpicker modal opens
-- onclose: callbackfunction(color) -> triggered when colorpicker modal closes
+- **oncolorchange**: callback function(color) -> triggered when color is selected.
+- **onopen**: callbackfunction(color) -> triggered when colorpicker modal opens
+- **onclose**: callbackfunction(color) -> triggered when colorpicker modal closes
 
 
 #### Custom Input Configuration
 
-When **type** is set to 'custom', the custom element should be passed like that. This feature allows you to have more control to personalize the element that will toggle the Colorpicker
+When **type** is set to 'custom', the custom element should be passed like that. This feature allows you to have more control to personalize the element that will toggle the Colorpicker. Example:
 
 ```html
 <Colorpicker>
-  <Element>
+  <div><section>This is an example</section></div>
 </Colorpicker>
 ```
 
-By Default Colorpicker will bind value and add ref to this element.
+By Default, Colorpicker will bind value and add a ref to the most external element inside the Colorpicker scope, in this case, the **div** element.
