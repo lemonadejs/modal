@@ -29,9 +29,6 @@ To use Colorpicker via a CDN, include the following script tags in your HTML fil
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lemonadejs/dist/lemonade.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@lemonadejs/colorpicker/dist/index.min.js"></script>
 ```
-
-## Usage
-
 ### Usage
 
 There is two ways to instantiate a Colorpicker, Programatically or Dinamically
@@ -75,15 +72,16 @@ export default function Component() {
 
 - closed: boolean -> if false colorpicker starts open. default is true
 - pallete: matrix -> provide the colors that will be rendered in the grid
+- type: string -> chooses the element that will toggle the colorpicker. options: 'button', 'input', 'icon', 'custom'
 
 ## Events
 
-- oncolorchange: callback function -> triggered when color is selected.
-- onopen: callbackfunction -> triggered when colorpicker modal opens
-- onclose: callbackfunction -> triggered when colorpicker modal closes
+- oncolorchange: callback function(color) -> triggered when color is selected.
+- onopen: callbackfunction(color) -> triggered when colorpicker modal opens
+- onclose: callbackfunction(color) -> triggered when colorpicker modal closes
 
 
-### Input Configuration
+### Custom Input Configuration
 
 This feature allows you to have more control to personalize the element that will toggle the Colorpicker
 

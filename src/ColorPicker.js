@@ -39,7 +39,6 @@ if (!Tabs && typeof (require) === 'function') {
 
         self.onchange = function (property) {
             if (property === 'pallete') {
-                // Re-build HTML inside table every time pallete is changed
                 self.constructRows()
             }
         }
@@ -50,6 +49,7 @@ if (!Tabs && typeof (require) === 'function') {
 
         self.select = function (event) {
             if (event.target.tagName == 'TD') {
+                // Get the color value from the attribute
                 let color = event.target.getAttribute('data-value')
 
                 // Remove current selected mark
@@ -66,6 +66,7 @@ if (!Tabs && typeof (require) === 'function') {
             }
         }
 
+        // build HTML inside the table based on the pallete
         self.constructRows = function () {
             let tbody = ''
             for (let j = 0; j < self.pallete.length; j++) {
@@ -93,9 +94,12 @@ if (!Tabs && typeof (require) === 'function') {
             let hex = num.toString(16);
             return hex.length === 1 ? "0" + hex : hex;
         }
+
         let rgbToHex = function(r, g, b) {
             return "#" + decToHex(r) + decToHex(g) + decToHex(b);
         }
+
+        // Draw the gradient in the canvas
         let draw = function() {
             let g = context.createLinearGradient(0, 0, self.canvas.width, 0);
             // Create color gradient
@@ -140,8 +144,10 @@ if (!Tabs && typeof (require) === 'function') {
                 let rect = self.el.getBoundingClientRect();
                 let left = x - rect.left;
                 let top = y - rect.top;
+
                 // Get the color in this pixel
                 let pixel = context.getImageData(left, top, 1, 1).data;
+
                 // Position pointer
                 self.point.style.left = left + 'px'
                 self.point.style.top = top + 'px'
@@ -186,12 +192,16 @@ if (!Tabs && typeof (require) === 'function') {
         
         let input = ''
 
-        if (!html) {
-           input = '<input type="color" :ref="self.inputRef" :bind="self.color" />'
-        } else if (html[html.indexOf('>') - 1] !== '/') {
+        if (html && html[html.indexOf('>') - 1] !== '/') {
             input = html.slice(0, html.indexOf('>')) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>')) 
-        } else {
+        } else if (html) {
             input = html.slice(0, html.indexOf('>') - 1) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>') - 1) 
+        }
+
+        if (!html && !self.type) {
+            input = '<input type="color" :ref="self.inputRef" :bind="self.color" />'
+        } else if (!html && self.type) {
+            input = 'jao'
         }
 
         let template = `<div class="lm-color-picker">
