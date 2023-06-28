@@ -1,14 +1,15 @@
 ### Todo
 
 - [ ] Fix resizable prop received as string and not bool
-- [ ] Add 'type' property to Colorpicker
+- [ ] Implement the 'icon' option for **type**
 
 ### In Progress
 
-- [ ] Work on Colorpicker doc
+- [x] Work on Colorpicker doc
 
 ### Done ✓
 
+- [x] Add **type** property to Colorpicker
 - [x] Implement Fetch on url property
 - [x] Fix Draggable Bug when defining width, height
 - [x] Fix Mouse Event Bugs when clicking on another element inside the modal

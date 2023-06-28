@@ -6,6 +6,7 @@
 
 .lm-tabs > div {
   height: 100%;
+  margin-bottom: 10px;
 }
 
 .lm-tabs > ul {
@@ -16,17 +17,24 @@
   margin-bottom: 5px;
   width: fit-content;
   align-self: center;
+  outline: 1px solid #A1A1A1;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .lm-tabs > ul > li {
   cursor: pointer;
   user-select: none;
-  padding: 2px 12px;
-  outline: 1px solid rgba(0, 0, 0, 0.2);
+  align-self: center;
+  padding: 10px 20px;
+}
+
+.lm-tabs > ul > li.lm-tab-list-item:hover {
+  background-color: #d5d5d5;
 }
 
 .lm-tabs > ul > li.selected {
-  outline: 1px solid rgba(0, 0, 0, 1);
+  background-color: #f1f1f1;
 }
 
 .lm-tabs > :not(:first-child) {

@@ -9,12 +9,12 @@ import '../css/colorpicker.css'
 function App() {
     let self = this;
 
-    self.onclose = function () {
-        console.log('closing modal')
+    self.onclose = function (something) {
+        console.log('closing modal', something.parent.color)
     }
 
-    self.onopen = function() {
-        console.log('opening modal')
+    self.onopen = function(something) {
+        console.log('opening modal', something.parent.color)
     }
 
     self.newPallete = [
@@ -25,7 +25,7 @@ function App() {
     ]
 
     return `<>
-    <ColorPicker />
+    <ColorPicker :onclose="self.onclose" type="button" closed="false"/>
     </>`;
 }
 

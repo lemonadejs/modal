@@ -33,10 +33,6 @@ if (!Tabs && typeof (require) === 'function') {
         const self = this
         window.grid = self
 
-        if (!self.pallete) {
-            self.pallete = defaultPallete
-        }
-
         self.onchange = function (property) {
             if (property === 'pallete') {
                 self.constructRows()
@@ -189,27 +185,33 @@ if (!Tabs && typeof (require) === 'function') {
                 self.oncolorchange(newColor)
             }
         }
+
+        if (!self.pallete) {
+            self.pallete = defaultPallete
+        }
         
         let input = ''
 
-        if (html && html[html.indexOf('>') - 1] !== '/') {
-            input = html.slice(0, html.indexOf('>')) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>')) 
-        } else if (html) {
-            input = html.slice(0, html.indexOf('>') - 1) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>') - 1) 
+        if (self.dom) {
+            html = self.dom
         }
 
-        if (!html && !self.type) {
-            input = '<input type="color" :ref="self.inputRef" :bind="self.color" />'
-        } else if (!html && self.type) {
-            // Deal with type
+        if (self.type === 'custom') {
+            if (html && html[html.indexOf('>') - 1] !== '/') {
+                input = html.slice(0, html.indexOf('>')) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>')) 
+            } else if (html) {
+                input = html.slice(0, html.indexOf('>') - 1) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>') - 1) 
+            }
+        } else {
+            input = '<input type="color" :ref="self.inputRef" :bind="self.color"/>'
         }
 
         let template = `<div class="lm-color-picker">
         ${input}
         <Modal :closed="self.closed" width="300" height="240" :onopen="self.onopen" :onclose="self.onclose">
         <div class="lm-color-picker-options">
-            <button onclick="self.parent.color = '#FFFFFF'; self.parent.closed = 'true'">Reset</button>
-            <button onclick="self.parent.closed = 'true'">Done</button>
+            <button onclick="self.parent.color='#FFFFFF';self.parent.closed='true'">Reset</button>
+            <button onclick="self.parent.closed='true'">Done</button>
         </div>
             <Tabs selected="0">
                 <div title="Grid"><Grid :onpick="self.parent.parent.updateColor" pallete={{self.parent.parent.pallete}} /></div>
