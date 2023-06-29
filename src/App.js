@@ -25,7 +25,7 @@ function App() {
     ]
 
     return `<>
-    <ColorPicker :onclose="self.onclose" type="button" closed="false"/>
+    <ColorPicker />
     </>`;
 }
 

@@ -1,12 +1,6 @@
 .lm-tabs {
   display: flex;
   flex-direction: column;
-  height: 90%;
-}
-
-.lm-tabs > div {
-  height: 100%;
-  margin-bottom: 10px;
 }
 
 .lm-tabs > ul {

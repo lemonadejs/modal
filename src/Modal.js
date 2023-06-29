@@ -7,23 +7,6 @@ if (! lemonade && typeof(require) === 'function') {
     typeof define === 'function' && define.amd ? define(factory) :
     global.Modal = factory();
 }(this, (function () {
-
-    /*
-       var defaults = {
-            >url: null,
-            >onopen: null,
-            >onclose: null,
-            onload: null,
-            >closed: false,
-            >width: null,
-            >height: null,
-            >title: null,
-            icon: null,
-            >resizable
-            >draggable
-        };
-     */
-
     let state = {};
     let editorAction;
     // Width of the border
@@ -207,7 +190,7 @@ if (! lemonade && typeof(require) === 'function') {
                         let reader = body.getReader()
                         reader.read().then(function pump({done, value}) { 
                             const decoder = new TextDecoder()
-                            self.content.innerHTML = decoder.decode(value.buffer)
+                            template += decoder.decode(value.buffer)
                         })
                     })
             }
@@ -217,6 +200,7 @@ if (! lemonade && typeof(require) === 'function') {
 
         self.onchange = function(property) {
             if (property === 'closed') {
+                console.log(typeof self.closed)
                 self.closed ? Dispatch('onclose') : Dispatch('onopen')
             }
         }
@@ -225,7 +209,7 @@ if (! lemonade && typeof(require) === 'function') {
 
         return `<div class="lm-modal" title="{{self.title}}" closed="{{self.closed}}"
             style="width: {{self.width}}px; height: {{self.height}}px; top: {{self.top}}px; left: {{self.left}}px;" onmousedown="self.mousedown(e)" tabindex="-1">
-                <div :ref="self.content">${template}</div>
+                ${template}
             </div>`
     }
 

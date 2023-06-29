@@ -91,9 +91,9 @@ Create an instance of the Colorpicker by providing the DOM element and the **_op
 
 ### Events
 
-- **oncolorchange**: callback function(color) -> triggered when color is selected.
-- **onopen**: callbackfunction(modalObject) -> triggered when colorpicker modal opens
-- **onclose**: callbackfunction(modalObject) -> triggered when colorpicker modal closes
+- **oncolorchange**: callback function(color) -> triggers when color is selected.
+- **onopen**: callbackfunction(modalObject) -> triggers when colorpicker modal opens
+- **onclose**: callbackfunction(modalObject) -> triggers when colorpicker modal closes
 
 
 #### Custom Input Configuration
