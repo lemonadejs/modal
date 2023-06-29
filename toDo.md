@@ -2,13 +2,15 @@
 
 - [ ] Fix resizable prop received as string and not bool
 - [ ] Implement the 'icon' option for **type**
+- [ ] Calendar
 
 ### In Progress
 
-- [x] Work on Colorpicker doc
+
 
 ### Done ✓
 
+- [x] Work on Colorpicker doc
 - [x] Add **type** property to Colorpicker
 - [x] Implement Fetch on url property
 - [x] Fix Draggable Bug when defining width, height

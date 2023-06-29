@@ -200,7 +200,7 @@ if (! lemonade && typeof(require) === 'function') {
 
         self.onchange = function(property) {
             if (property === 'closed') {
-                console.log(typeof self.closed)
+                console.log(self.closed)
                 self.closed ? Dispatch('onclose') : Dispatch('onopen')
             }
         }
