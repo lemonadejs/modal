@@ -33,5 +33,5 @@
 }
 
 .lm-modal[closed="true"] {
-    display: none;
+    display: none !important;
 }
