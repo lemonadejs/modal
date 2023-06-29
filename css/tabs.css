@@ -1,11 +1,8 @@
 .lm-tabs {
-  display: flex;
-  flex-direction: column;
-  height: 90%;
 }
 
 .lm-tabs > div {
-  height: 100%;
+  padding: 10px;
 }
 
 .lm-tabs > ul {
@@ -23,10 +20,17 @@
   user-select: none;
   padding: 2px 12px;
   outline: 1px solid rgba(0, 0, 0, 0.2);
+  background-position: center;
+  transition: background 0.8s;
 }
 
-.lm-tabs > ul > li.selected {
-  outline: 1px solid rgba(0, 0, 0, 1);
+.lm-tabs > ul > li:hover {
+  background: #eee radial-gradient(circle, transparent 1%, #eee 1%) center/15000%;
+}
+.lm-tabs > ul > li:active {
+  background-color: #ddd;
+  background-size: 100%;
+  transition: background 0s;
 }
 
 .lm-tabs > :not(:first-child) {

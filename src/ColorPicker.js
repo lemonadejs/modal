@@ -12,11 +12,11 @@ if (!Tabs && typeof (require) === 'function') {
 
 ; (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            global.ColorPicker = factory();
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.ColorPicker = factory();
 }(this, (function () {
 
-    const defaultPallete =  [
+    const defaultPalette =  [
         ["#ffebee", "#fce4ec", "#f3e5f5", "#e8eaf6", "#e3f2fd", "#e0f7fa", "#e0f2f1", "#e8f5e9", "#f1f8e9", "#f9fbe7", "#fffde7", "#fff8e1", "#fff3e0", "#fbe9e7", "#efebe9", "#fafafa", "#eceff1"],
         ["#ffcdd2", "#f8bbd0", "#e1bee7", "#c5cae9", "#bbdefb", "#b2ebf2", "#b2dfdb", "#c8e6c9", "#dcedc8", "#f0f4c3", "#fff9c4", "#ffecb3", "#ffe0b2", "#ffccbc", "#d7ccc8", "#f5f5f5", "#cfd8dc"],
         ["#ef9a9a", "#f48fb1", "#ce93d8", "#9fa8da", "#90caf9", "#80deea", "#80cbc4", "#a5d6a7", "#c5e1a5", "#e6ee9c", "#fff59d", "#ffe082", "#ffcc80", "#ffab91", "#bcaaa4", "#eeeeee", "#b0bec5"],
@@ -33,23 +33,18 @@ if (!Tabs && typeof (require) === 'function') {
         const self = this
         window.grid = self
 
-        if (!self.pallete) {
-            self.pallete = defaultPallete
+        if (! self.pallete) {
+            self.pallete = defaultPalette;
         }
 
         self.onchange = function (property) {
-            if (property === 'pallete') {
-                // Re-build HTML inside table every time pallete is changed
+            if (property === 'palette') {
                 self.constructRows()
             }
         }
 
-        self.onload = function () {
-            self.tableRef.addEventListener("click", self.select)
-        }
-
         self.select = function (event) {
-            if (event.target.tagName == 'TD') {
+            if (event.target.tagName === 'TD') {
                 let color = event.target.getAttribute('data-value')
 
                 // Remove current selected mark
@@ -61,7 +56,7 @@ if (!Tabs && typeof (require) === 'function') {
                 // Mark cell as selected
                 if (color) {
                     event.target.classList.add('lm-color-selected');
-                    self.onpick(color)
+                    self.parent.parent.parent.value = color;
                 }
             }
         }
@@ -76,13 +71,12 @@ if (!Tabs && typeof (require) === 'function') {
                 }
                 tbody += '</tr>'
             }
-
-            self.tableRef.innerHTML = tbody
+            self.tableRef.innerHTML = tbody;
         }
         
-        return `<div class="lm-color-grid" pallete="{{self.pallete}}">
-        <table cellpadding="7" cellspacing="0" :ref="self.tableRef" :ready="self.constructRows()"></table>
-        </div>`
+        return `<div class="lm-color-grid" palette="{{self.palette}}">
+            <table cellpadding="7" cellspacing="0" onclick="self.select(e)" :ref="self.tableRef" :ready="self.constructRows()"></table>
+            </div>`
     }
 
     function Spectrum() {
@@ -127,7 +121,7 @@ if (!Tabs && typeof (require) === 'function') {
             let x;
             let y;
             let buttons = 1;
-            if (e.type == 'touchmove') {
+            if (e.type === 'touchmove') {
                 x = e.changedTouches[0].clientX;
                 y = e.changedTouches[0].clientY;
             } else {
@@ -145,67 +139,62 @@ if (!Tabs && typeof (require) === 'function') {
                 // Position pointer
                 self.point.style.left = left + 'px'
                 self.point.style.top = top + 'px'
-                // Return color
 
-                self.onpick(rgbToHex(pixel[0], pixel[1], pixel[2]))
+                // Return color
+                self.parent.parent.parent.value = rgbToHex(pixel[0], pixel[1], pixel[2]);
             }
         }
-     
-        self.color = 'Click to get a color';
-     
+
         return `<div class="lm-color-hsl">
-            <canvas width="278" height="141" :ref="self.canvas"
-                onmousedown="self.update(e)"
-                onmousemove="self.update(e)"
-                ontouchmove="self.update(e)"></canvas>
+            <canvas width="238" height="140" :ref="self.canvas" onmousedown="self.update(e)" onmousemove="self.update(e)" ontouchmove="self.update(e)"></canvas>
             <div class="lm-color-point" :ref="self.point"></div>
         </div>`;
     }
 
-    const ColorPicker = function (html) {
-        let self = this
+    const ColorPicker = function () {
+        let self = this;
+
         window.colorPicker = self;
 
-        self.onload = function () {
-            self.closed = !!self.closed
-            if (self.inputRef) {
-                self.inputRef.addEventListener('click',  (event) => {
-                    event.preventDefault()
-                    self.closed = !self.closed
-                })
+        self.onchange = function(prop) {
+            if (prop === 'value') {
+                if (typeof(self.onupdate) === 'function') {
+                    self.onupdate(self.value);
+                }
             }
         }
 
-        self.updateColor = function (newColor) {
-            self.color = newColor
-            if (typeof self.oncolorchange === 'function') {
-                self.oncolorchange(newColor)
+        self.state = function(state) {
+            if (self.closed !== state) {
+                self.closed = state;
             }
         }
 
-        self.toggle = function () {
-            self.closed = !self.closed
+        if (typeof(self.name) === 'undefined') {
+            self.name = '';
         }
-        
-        let input = ''
-
-        if (!html) {
-           input = '<input type="color" :ref="self.inputRef" :bind="self.color" />'
-        } else if (html[html.indexOf('>') - 1] !== '/') {
-            input = html.slice(0, html.indexOf('>')) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>')) 
-        } else {
-            input = html.slice(0, html.indexOf('>') - 1) + ` :ref="self.inputRef" :bind="self.color"` + html.slice(html.indexOf('>') - 1) 
+        if (typeof(self.closed) === 'undefined') {
+            self.closed = true;
         }
 
-        let template = `<div class="lm-color-picker">
-        ${input}
-        <Modal @ref="self.component" :closed="self.closed" width="300" height="240" :onopen="self.onopen" :onclose="self.onclose">
-        <div class="lm-color-picker-options"><button onclick="self.parent.color = ''; self.parent.toggle()">Reset</button><button onclick="self.parent.toggle()">Done</button></div>
-            <Tabs selected="0">
-                <div title="Grid"><Grid :onpick="self.parent.parent.updateColor" pallete={{self.parent.parent.pallete}} /></div>
-                <div title="Spectrum"><Spectrum :onpick="self.parent.parent.updateColor"/></div>
-            </Tabs>
-        </Modal>
+        let type = '';
+        if (self.type === 'input') {
+            type = `<input type="text" name="${self.name}" onfocus="self.state(false)" onclick="self.state(false)" onblur="self.state(true)" :bind="self.value" />`;
+        } else if (self.type === 'box') {
+            type = `<div name="${self.name}"></div>`;
+        }
+
+        let template = `<div class="lm-color-picker" value="{{self.value}}">${type}
+            <Modal closed="{{self.closed}}" width="260" height="240" :onopen="self.onopen" :onclose="self.onclose" :ref="self.component">
+                <div class="lm-color-picker-options">
+                    <button onclick="self.parent.value = ''; self.parent.state(true);">Reset</button>
+                    <button onclick="self.parent.state(true);">Done</button>
+                </div>
+                <Tabs selected="0">
+                    <div title="Grid"><Grid pallete="{{self.parent.parent.palette}}" /></div>
+                    <div title="Spectrum"><Spectrum /></div>
+                </Tabs>
+            </Modal>
         </div>`
 
         return lemonade.element(template, self, { Modal, Tabs, Spectrum, Grid })

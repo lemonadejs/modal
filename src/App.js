@@ -45,12 +45,7 @@ function App() {
     // self.dom = `<input type='text'></input>`
 
     return `<>
-    <ColorPicker color="{{self.color}}" oncolorchange="{{self.handleChange}}" closed="false" pallete={{self.newPallete}}>
-        <div style="background-color: {{self.color}}; height: 25px; width: 100px; display: flex; justify-content:center;">
-            DIV
-        </div>
-    </ColorPicker>
-    <ColorPicker color="{{self.othercolor}}" closed="true" :onopen="self.onopen" :onclose="self.onclose" />
+        <ColorPicker type="input" value="{{self.othercolor}}" :onopen="self.onopen" :onclose="self.onclose" />
     </>`;
 
     // return `<>
