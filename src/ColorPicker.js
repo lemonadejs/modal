@@ -44,7 +44,7 @@ if (!Tabs && typeof (require) === 'function') {
         }
 
         self.select = function (event) {
-            if (event.target.tagName === 'TD') {
+            if (event.target.tagName == 'TD') {
                 let color = event.target.getAttribute('data-value')
 
                 // Remove current selected mark

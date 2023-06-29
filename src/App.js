@@ -9,30 +9,12 @@ import '../css/colorpicker.css'
 function App() {
     let self = this;
 
-    self.onclose = function () {
-        console.log('closing modal')
+    self.onclose = function (something) {
+        console.log('closing modal', something.parent.color)
     }
 
-    self.onopen = function() {
-        console.log('opening modal')
-    }
-
-    self.toggle = function () {
-        self.closed = !self.closed
-    }
-
-    self.closed = false
-
-    self.data = [{ title: 'Tab1', content: "<div>Hello</div>" },
-                 { title: 'Tab2', content: "Tab 2 CONTENT!!" },
-                 { title: 'Tab3', content: "<ul><li>Item 1</li><li>Item 2</li></ul>" }]
-
-    self.color = '#228822'
-
-    self.othercolor = '#0099AA'
-
-    self.handleChange = function (color) {
-        self.color = color
+    self.onopen = function(something) {
+        console.log('opening modal', something.parent.color)
     }
 
     self.newPallete = [
@@ -42,20 +24,9 @@ function App() {
         ['#003790', '#315278', '#48687a', '#5e7d81', '#76938c', '#8fa89a' ],
     ]
 
-    // self.dom = `<input type='text'></input>`
-
     return `<>
-        <ColorPicker type="input" value="{{self.othercolor}}" :onopen="self.onopen" :onclose="self.onclose" />
+    <ColorPicker type="input" value="{{self.othercolor}}" :onopen="self.onopen" :onclose="self.onclose" />
     </>`;
-
-    // return `<>
-    // <Modal @ref="self.component" :resizable="true" :draggable="true" :onclose="self.onclose" :onopen="self.onopen" :closed="self.closed" top="50">
-    // <Tabs data="{{self.parent.data}}" selected="2">
-    //     <p title="oi">ola</p>
-    // </Tabs>
-    // </Modal>
-    // <button :onclick="self.toggle">toggle</button>
-    // </>`;
 }
 
 lemonade.setComponents({ ColorPicker });
