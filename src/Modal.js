@@ -1,5 +1,5 @@
 if (! lemonade && typeof(require) === 'function') {
-    var lemonade = require('lemonadejs');
+    var lemonade = require('./lemonade.js');
 }
 
 ;(function (global, factory) {
@@ -15,40 +15,55 @@ if (! lemonade && typeof(require) === 'function') {
     // Events
     const mouseDown = function(e) {
         let item = e.target.closest('.lm-modal');
-        if (!!item) {
+        if (item !== null) {
             // Keep the tracking information
+            let x;
+            let y;
             let rect = item.getBoundingClientRect();
-            editorAction = {
-                e: item,
-                x: e.clientX,
-                y: e.clientY,
-                w: rect.width,
-                h: rect.height,
-                d: item.style.cursor,
-                resizing: item.style.cursor ? true : false,
-                actioned: false,
-                s: this,
+
+            if (e.changedTouches && e.changedTouches[0]) {
+                x = e.changedTouches[0].clientX;
+                y = e.changedTouches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
             }
 
-            // Make sure width and height styling is OK
-            if (! e.target.style.width) {
-                item.style.width = rect.width + 'px';
-            }
-
-            if (! item.style.height) {
-                item.style.height = rect.height + 'px';
-            }
-
-            // Remove any selection from the page
-            let s = window.getSelection();
-            if (s.rangeCount) {
-                for (let i = 0; i < s.rangeCount; i++) {
-                    s.removeRange(s.getRangeAt(i));
+            if (item.self.closable === true && rect.width - (x - rect.left) < 40 && (y - rect.top) < 40) {
+                item.self.closed = true;
+            } else {
+                editorAction = {
+                    e: item,
+                    x: x,
+                    y: y,
+                    w: rect.width,
+                    h: rect.height,
+                    d: item.style.cursor,
+                    resizing: !!item.style.cursor,
+                    actioned: false,
+                    s: item.self,
                 }
-            }
 
-            e.preventDefault();
-            e.stopPropagation();
+                // Make sure width and height styling is OK
+                if (!e.target.style.width) {
+                    item.style.width = rect.width + 'px';
+                }
+
+                if (!item.style.height) {
+                    item.style.height = rect.height + 'px';
+                }
+
+                // Remove any selection from the page
+                let s = window.getSelection();
+                if (s.rangeCount) {
+                    for (let i = 0; i < s.rangeCount; i++) {
+                        s.removeRange(s.getRangeAt(i));
+                    }
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+            }
         }
     }
 
@@ -87,7 +102,7 @@ if (! lemonade && typeof(require) === 'function') {
             let y = e.clientY || e.pageY;
 
             // Action on going
-            if (! editorAction.resizing && editorAction.s.draggable == true) {
+            if (! editorAction.resizing && editorAction.s.draggable === true) {
                 if (state && state.x == null && state.y == null) {
                     state.x = x;
                     state.y = y;
@@ -119,24 +134,25 @@ if (! lemonade && typeof(require) === 'function') {
             } else {
                 let width = null;
                 let height = null;
+                let newHeight = null;
 
-                if (editorAction.d == 'e-resize' || editorAction.d == 'ne-resize' || editorAction.d == 'se-resize') {
+                if (editorAction.d === 'e-resize' || editorAction.d === 'ne-resize' || editorAction.d === 'se-resize') {
                     // Update width
                     width = editorAction.w + (x - editorAction.x);
                     editorAction.e.style.width = width + 'px';
 
                     // Update Height
                     if (e.shiftKey) {
-                        var newHeight = (x - editorAction.x) * (editorAction.h / editorAction.w);
+                        newHeight = (x - editorAction.x) * (editorAction.h / editorAction.w);
                         height = editorAction.h + newHeight;
                         editorAction.e.style.height = height + 'px';
                     } else {
-                        var newHeight = false;
+                        newHeight = false;
                     }
                 }
 
                 if (! newHeight) {
-                    if (editorAction.d == 's-resize' || editorAction.d == 'se-resize' || editorAction.d == 'sw-resize') {
+                    if (editorAction.d === 's-resize' || editorAction.d === 'se-resize' || editorAction.d === 'sw-resize') {
                         height = editorAction.h + (y - editorAction.y);
                         editorAction.e.style.height = height + 'px';
                     }
@@ -150,30 +166,41 @@ if (! lemonade && typeof(require) === 'function') {
             }
         } else {
             let item = e.target.closest('.lm-modal');
-            if (!!item && item.lemon.self && item.lemon.self.resizable && item.lemon.self.resizable == 'true') {
-                let rect = item.getBoundingClientRect();
-                if (rect.height - (e.clientY - rect.top) < cornerSize) {
-                    if (rect.width - (e.clientX - rect.left) < cornerSize) {
-                        item.style.cursor = 'se-resize';
+            if (item !== null) {
+                if (item.self.resizable === true) {
+                    let rect = item.getBoundingClientRect();
+                    if (rect.height - (e.clientY - rect.top) < cornerSize) {
+                        if (rect.width - (e.clientX - rect.left) < cornerSize) {
+                            item.style.cursor = 'se-resize';
+                        } else {
+                            item.style.cursor = 's-resize';
+                        }
+                    } else if (rect.width - (e.clientX - rect.left) < cornerSize) {
+                        item.style.cursor = 'e-resize';
                     } else {
-                        item.style.cursor = 's-resize';
+                        item.style.cursor = '';
                     }
-                } else if (rect.width - (e.clientX - rect.left) < cornerSize) {
-                    item.style.cursor = 'e-resize';
-                } else {
-                    item.style.cursor = '';
                 }
             }
         }
     }
 
     document.addEventListener('mouseup', mouseUp);
-    document.addEventListener('mousedown', mouseDown);
     document.addEventListener('mousemove', mouseMove);
 
     const Modal = function (template) {
-
         let self = this
+
+        // Default values
+        if (typeof(self.title) === 'undefined') {
+            self.title = '';
+        }
+        if (typeof(self.closed) === 'undefined') {
+            self.closed = false;
+        }
+        if (typeof(self.closable) === 'undefined') {
+            self.closable = false;
+        }
 
         // Dispatcher
         const Dispatch = (type, option) => {
@@ -181,36 +208,46 @@ if (! lemonade && typeof(require) === 'function') {
                 self[type](self, option)
             }
         }
-        
+
+        self.mousedown = mouseDown;
+
         self.onload = function() {
             if (self.url) {
                 fetch(self.url)
                     .then(response => response.clone().body)
                     .then(body => {
-                        let reader = body.getReader()
+                        let reader = body.getReader();
                         reader.read().then(function pump({done, value}) { 
-                            const decoder = new TextDecoder()
-                            template += decoder.decode(value.buffer)
+                            const decoder = new TextDecoder();
+                            template += decoder.decode(value.buffer);
                         })
-                    })
+                    });
             }
-        }
 
-        self.mousedown = mouseDown.bind(self);
+            // Initial centralize
+            if (self.center === true) {
+                self.top = (window.innerHeight - self.height) / 2;
+                self.left = (window.innerWidth - self.width) / 2;
+            }
+
+            // Make sure the instance of the self is available via the DOM element
+            self.el.self = self;
+
+            // Close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && self.closed === false) {
+                    self.closed = true;
+                }
+            });
+        }
 
         self.onchange = function(property) {
             if (property === 'closed') {
-                console.log(self.closed)
-                self.closed ? Dispatch('onclose') : Dispatch('onopen')
+                self.closed ? Dispatch('onclose') : Dispatch('onopen');
             }
         }
 
-        window.modal = self;
-
-        return `<div class="lm-modal" title="{{self.title}}" closed="{{self.closed}}"
-            style="width: {{self.width}}px; height: {{self.height}}px; top: {{self.top}}px; left: {{self.left}}px;" onmousedown="self.mousedown(e)" tabindex="-1">
-                ${template}
-            </div>`
+        return `<div class="lm-modal" title="{{self.title}}" closed="{{self.closed}}" closable="{{self.closable}}" style="width: {{self.width}}px; height: {{self.height}}px; top: {{self.top}}px; left: {{self.left}}px;" onmousedown="self.mousedown(e)" tabindex="-1">${template}</div>`
     }
 
     return function (root, options) {

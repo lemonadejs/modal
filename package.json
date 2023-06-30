@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "lemonadejs": "^3.0.7"
+    "lemonadejs": "^3.2.2"
   },
   "scripts": {
     "build": "npx webpack --mode=production --config webpack.config.js",

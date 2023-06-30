@@ -30,8 +30,7 @@ if (!Tabs && typeof (require) === 'function') {
     ]
 
     function Grid() {
-        const self = this
-        window.grid = self
+        const self = this;
 
         if (! self.pallete) {
             self.pallete = defaultPalette;
@@ -44,7 +43,7 @@ if (!Tabs && typeof (require) === 'function') {
         }
 
         self.select = function (event) {
-            if (event.target.tagName == 'TD') {
+            if (event.target.tagName === 'TD') {
                 let color = event.target.getAttribute('data-value')
 
                 // Remove current selected mark
@@ -146,7 +145,7 @@ if (!Tabs && typeof (require) === 'function') {
         }
 
         return `<div class="lm-color-hsl">
-            <canvas width="238" height="140" :ref="self.canvas" onmousedown="self.update(e)" onmousemove="self.update(e)" ontouchmove="self.update(e)"></canvas>
+            <canvas width="238" height="160" :ref="self.canvas" onmousedown="self.update(e)" onmousemove="self.update(e)" ontouchmove="self.update(e)"></canvas>
             <div class="lm-color-point" :ref="self.point"></div>
         </div>`;
     }
@@ -165,7 +164,7 @@ if (!Tabs && typeof (require) === 'function') {
         }
 
         self.state = function(state) {
-            if (self.closed !== state) {
+            if (self.closed !== state || self.closed !== self.component.closed) {
                 self.closed = state;
             }
         }
@@ -179,18 +178,18 @@ if (!Tabs && typeof (require) === 'function') {
 
         let type = '';
         if (self.type === 'input') {
-            type = `<input type="text" name="${self.name}" onfocus="self.state(false)" onclick="self.state(false)" onblur="self.state(true)" :bind="self.value" />`;
+            type = `<input type="text" name="${self.name}" onfocus="self.state(false)" onclick="self.state(false)" onblur="self.state(true)" :bind="self.value" class="lm-color-input" />`;
         } else if (self.type === 'box') {
             type = `<div name="${self.name}"></div>`;
         }
 
         let template = `<div class="lm-color-picker" value="{{self.value}}">${type}
-            <Modal closed="{{self.closed}}" width="260" height="240" :onopen="self.onopen" :onclose="self.onclose" :ref="self.component">
+            <Modal closed="{{self.closed}}" width="260" height="260" :onopen="self.onopen" :onclose="self.onclose" :ref="self.component">
                 <div class="lm-color-picker-options">
                     <button onclick="self.parent.value = ''; self.parent.state(true);">Reset</button>
                     <button onclick="self.parent.state(true);">Done</button>
                 </div>
-                <Tabs selected="0">
+                <Tabs selected="0" position="center">
                     <div title="Grid"><Grid pallete="{{self.parent.parent.palette}}" /></div>
                     <div title="Spectrum"><Spectrum /></div>
                 </Tabs>

@@ -4,8 +4,8 @@ if (!lemonade && typeof (require) === 'function') {
 
 ; (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            global.Tabs = factory();
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.Tabs = factory();
 }(this, (function () {
 
     const Tabs = function (html) {
@@ -61,7 +61,7 @@ if (!lemonade && typeof (require) === 'function') {
             }
         }
 
-        return `<div class="lm-tabs">
+        return `<div class="lm-tabs" position="{{self.position||''}}">
             <ul :loop="self.tabs" onclick="self.click(e, this)" selected="{{self.selected}}"><li class="lm-tab-list-item">{{self.title}}</li></ul>
             ${content}
         </div>`

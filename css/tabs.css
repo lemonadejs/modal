@@ -38,5 +38,9 @@
 }
 
 .lm-tabs > :not(:first-child).selected {
-  display: inline-block;
+  display: block;
+}
+
+.lm-tabs[position="center"] > ul {
+  margin: 0 auto;
 }
