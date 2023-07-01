@@ -69,3 +69,4 @@ lerna-debug.log
 Thumbs.db
 
 mochawesome-report
+/package-lock.json

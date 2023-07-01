@@ -1,4 +1,4 @@
-import lemonade from './lemonade.js';
+import lemonade from 'lemonadejs'
 import Modal from './Modal.js';
 //import Tabs from './Tabs.js';
 import ColorPicker from './ColorPicker.js';
@@ -24,8 +24,10 @@ function App() {
         ['#003790', '#315278', '#48687a', '#5e7d81', '#76938c', '#8fa89a' ],
     ]
 
-    return `
-        <ColorPicker type="input" value="{{self.othercolor}}" :onopen="self.onopen" :onclose="self.onclose" />`;
+    return `<div>
+        <ColorPicker type="input" value="{{self.othercolor}}" :onopen="self.onopen" :onclose="self.onclose" />
+        <Modal :resizable="true" :draggable="true" :closable="true" />
+        </div>`;
 }
 
 lemonade.setComponents({ ColorPicker, Modal });

@@ -1,5 +1,5 @@
 if (! lemonade && typeof(require) === 'function') {
-    var lemonade = require('./lemonade.js');
+    var lemonade = require('lemonadejs');
 }
 
 ;(function (global, factory) {
@@ -81,9 +81,12 @@ if (! lemonade && typeof(require) === 'function') {
                 editorAction.s.top = t;
                 editorAction.s.left = l;
             }
-            // if (typeof(editorAction.e.refresh) == 'function' && state.actioned) {
-            //     editorAction.e.refresh();
-            // }
+
+            if (typeof(editorAction.e.refresh) == 'function') {
+                state.actioned = true;
+                editorAction.e.refresh.call(editorAction.s);
+            }
+
             editorAction.e.style.cursor = '';
         }
 
@@ -129,7 +132,7 @@ if (! lemonade && typeof(require) === 'function') {
                 // Update element
                 if (typeof(editorAction.e.refresh) == 'function') {
                     state.actioned = true;
-                    editorAction.e.refresh('position', top, left);
+                    editorAction.e.refresh.call(editorAction.s, 'position', top, left);
                 }
             } else {
                 let width = null;
@@ -161,13 +164,13 @@ if (! lemonade && typeof(require) === 'function') {
                 // Update element
                 if (typeof(editorAction.e.refresh) == 'function') {
                     state.actioned = true;
-                    editorAction.e.refresh('dimensions', width, height);
+                    editorAction.e.refresh.call(editorAction.s, 'dimensions', width, height);
                 }
             }
         } else {
             let item = e.target.closest('.lm-modal');
             if (item !== null) {
-                if (item.self.resizable === true) {
+                if (item.self && item.self.resizable === true) {
                     let rect = item.getBoundingClientRect();
                     if (rect.height - (e.clientY - rect.top) < cornerSize) {
                         if (rect.width - (e.clientX - rect.left) < cornerSize) {
@@ -189,7 +192,7 @@ if (! lemonade && typeof(require) === 'function') {
     document.addEventListener('mousemove', mouseMove);
 
     const Modal = function (template) {
-        let self = this
+        let self = this;
 
         // Default values
         if (typeof(self.title) === 'undefined') {
@@ -239,6 +242,11 @@ if (! lemonade && typeof(require) === 'function') {
                     self.closed = true;
                 }
             });
+
+            // Full screen
+            if (self.height > 260) {
+                self.el.classList.add('fullscreen');
+            }
         }
 
         self.onchange = function(property) {

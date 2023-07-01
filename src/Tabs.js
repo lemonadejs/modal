@@ -11,8 +11,6 @@ if (!lemonade && typeof (require) === 'function') {
     const Tabs = function (html) {
         let self = this
 
-        window.tabs = self;
-
         let content = html;
 
         if (self.data) {
@@ -24,29 +22,25 @@ if (!lemonade && typeof (require) === 'function') {
         self.tabs = [];
 
         self.onload = function () {
-            let divs = self.el.children;
-            for (let i = 1; i < divs.length; i++) {
-                self.tabs.push({ title: divs[i].title });
+            for (let i = 0; i < self.content.children.length; i++) {
+                self.tabs.push({ title: self.content.children[i].title });
             }
             self.refresh('tabs');
 
-            if (!isNaN(parseInt(self.selected))) {
+            if (! isNaN(parseInt(self.selected))) {
                 select(self.selected);
             }
         }
 
         const select = function (index) {
-            let headers = self.el.children[0].children;
-            let content = self.el.children;
             index = parseInt(index);
 
-            for (let i = 0; i < headers.length; i++) {
-                headers[i].classList.remove('selected');
-                content[i + 1].classList.remove('selected');
+            for (let i = 0; i < self.content.children.length; i++) {
+                self.headers.children[i].classList.remove('selected');
+                self.content.children[i].classList.remove('selected');
             }
-
-            headers[index].classList.add('selected');
-            content[index + 1].classList.add('selected');
+            self.headers.children[index].classList.add('selected');
+            self.content.children[index].classList.add('selected');
         }
 
         self.onchange = function (property) {
@@ -62,8 +56,8 @@ if (!lemonade && typeof (require) === 'function') {
         }
 
         return `<div class="lm-tabs" position="{{self.position||''}}">
-            <ul :loop="self.tabs" onclick="self.click(e, this)" selected="{{self.selected}}"><li class="lm-tab-list-item">{{self.title}}</li></ul>
-            ${content}
+            <ul :ref="self.headers" :loop="self.tabs" onclick="self.click(e, this)" selected="{{self.selected}}"><li class="lm-tab-list-item">{{self.title}}</li></ul>
+            <div :ref="self.content" class="lm-tabs-content">${content}</div>
         </div>`
     }
 
