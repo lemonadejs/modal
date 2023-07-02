@@ -56,7 +56,7 @@ if (!lemonade && typeof (require) === 'function') {
         }
 
         return `<div class="lm-tabs" position="{{self.position||''}}">
-            <ul :ref="self.headers" :loop="self.tabs" onclick="self.click(e, this)" selected="{{self.selected}}"><li class="lm-tab-list-item">{{self.title}}</li></ul>
+            <ul :ref="self.headers" :loop="self.tabs" onclick="self.click(e, this)" :selected="self.selected"><li class="lm-tab-list-item">{{self.title}}</li></ul>
             <div :ref="self.content" class="lm-tabs-content">${content}</div>
         </div>`
     }

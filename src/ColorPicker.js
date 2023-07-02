@@ -3,11 +3,11 @@ if (!lemonade && typeof (require) === 'function') {
 }
 
 if (!Modal && typeof (require) === 'function') {
-    var Modal = require('./Modal');
+    var Modal = require('@lemonadejs/modal');
 }
 
 if (!Tabs && typeof (require) === 'function') {
-    var Tabs = require('./Tabs');
+    var Tabs = require('@lemonadejs/tabs');
 }
 
 ; (function (global, factory) {
@@ -32,8 +32,8 @@ if (!Tabs && typeof (require) === 'function') {
     function Grid() {
         const self = this;
 
-        if (! self.pallete) {
-            self.pallete = defaultPalette;
+        if (! self.palette) {
+            self.palette = defaultPalette;
         }
 
         self.onchange = function (property) {
@@ -62,10 +62,10 @@ if (!Tabs && typeof (require) === 'function') {
 
         self.constructRows = function () {
             let tbody = ''
-            for (let j = 0; j < self.pallete.length; j++) {
+            for (let j = 0; j < self.palette.length; j++) {
                 tbody += '<tr>'
-                for (let i = 0; i < self.pallete[j].length; i++) {
-                    let color = self.pallete[j][i]
+                for (let i = 0; i < self.palette[j].length; i++) {
+                    let color = self.palette[j][i]
                     tbody += `<td data-value="${color}" style="background-color: ${color}" />`
                 }
                 tbody += '</tr>'
@@ -73,7 +73,7 @@ if (!Tabs && typeof (require) === 'function') {
             self.tableRef.innerHTML = tbody;
         }
         
-        return `<div class="lm-color-grid" palette="{{self.palette}}">
+        return `<div class="lm-color-grid" :palette="self.palette">
             <table cellpadding="7" cellspacing="0" onclick="self.select(e)" :ref="self.tableRef" :ready="self.constructRows()"></table>
             </div>`
     }
@@ -178,26 +178,28 @@ if (!Tabs && typeof (require) === 'function') {
 
         let type = '';
         if (self.type === 'input') {
-            type = `<input type="text" name="${self.name}" onfocus="self.state(false)" onclick="self.state(false)" onblur="self.state(true)" :bind="self.value" class="lm-color-input" />`;
+            type = `<input type="text" name="${self.name}" onfocus="self.state(false)" onclick="self.state(false)" onblur="self.state(true)" :bind="self.value" class="lm-color-input" style="background-color: {{self.value}}"/>`;
         } else if (self.type === 'box') {
             type = `<div name="${self.name}"></div>`;
         }
 
-        let template = `<div class="lm-color-picker" value="{{self.value}}">${type}
+        let template = `<div class="lm-color-picker" :value="self.value">${type}
             <Modal closed="{{self.closed}}" width="260" height="260" :onopen="self.onopen" :onclose="self.onclose" :ref="self.component">
                 <div class="lm-color-picker-options">
                     <button onclick="self.parent.value = ''; self.parent.state(true);">Reset</button>
                     <button onclick="self.parent.state(true);">Done</button>
                 </div>
                 <Tabs selected="0" position="center">
-                    <div title="Grid"><Grid pallete="{{self.parent.parent.palette}}" /></div>
+                    <div title="Grid"><Grid :palette="self.parent.parent.palette" /></div>
                     <div title="Spectrum"><Spectrum /></div>
                 </Tabs>
             </Modal>
         </div>`
 
-        return lemonade.element(template, self, { Modal, Tabs, Spectrum, Grid })
+        return lemonade.element(template, self, { Spectrum, Grid })
     }
+
+    lemonade.setComponents({ ColorPicker: ColorPicker });
 
     return function (root, options) {
         if (typeof (root) === 'object') {
